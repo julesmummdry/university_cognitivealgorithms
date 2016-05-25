@@ -1,5 +1,6 @@
-#Juliane Reschke 370450
-#Pierre-Henri Mathieu 377099
+# Juliane Reschke (370450)
+# Pierre-Henri Mathieu (377099)
+# Maria Browarska (4970657, FU Berlin)
 
 import scipy as sp
 import scipy.io as io
@@ -102,7 +103,20 @@ def plot_histogram(X, Y, w, b):
                     b       -  bias term for linear classification   
     
     '''
-    # ... your code here   
+    #calculate the correct classified
+    correct = (sp.sign(w.dot(X) - b) == Y).nonzero()[0]
+
+    #class labels 1
+    target = w.dot(X[:, (Y == 1)])
+    #class balels -1
+    non_target = w.dot(X[:, (Y == -1)])
+
+    pl.title("Acc %0.0f%%" % (float(correct.shape[0]) / X.shape[1] * 100,))
+    pl.xlabel('w^T X')
+    pl.hist(non_target)
+    pl.hist(target)
+    pl.legend(["non target", "target"], loc=0)
+    pl.show()
 
 
 def compare_classifiers(digit=3):
@@ -174,9 +188,10 @@ def plot_imgs(X, Y):
     pl.show()
 
 
-image_data, labels = load_usps_data('usps.mat', 6)
-plot_imgs(image_data, labels)
-perc_weights, perc_bias, perc_acc = train_perceptron(image_data, labels)
-analyse_accuracies_perceptron(3)
-ncc_weights, ncc_bias = train_ncc(image_data, labels)
-plot_histogram(image_data, labels, ncc_weights, ncc_bias)
+#image_data, labels = load_usps_data('usps.mat', 6)
+#plot_imgs(image_data, labels)
+#perc_weights, perc_bias, perc_acc = train_perceptron(image_data, labels)
+#analyse_accuracies_perceptron(3)
+#ncc_weights, ncc_bias = train_ncc(image_data, labels)
+#plot_histogram(image_data, labels, ncc_weights, ncc_bias)
+compare_classifiers(9)
