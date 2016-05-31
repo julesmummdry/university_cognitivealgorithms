@@ -17,6 +17,17 @@ def train_lda(X, Y):
     # your code here 
     # hint: use the scipy/numpy function sp.cov
 
+    # get class data w_{-1} and w_{+1}
+    w_positive = X.T[(Y == 1)]
+    w_negative = X.T[(Y == -1)]
+
+    # compute class mean of class w_{-1} and w_{+1}
+    mean_w_pos = sp.mean(w_positive, 0)
+    mean_w_neg = sp.mean(w_negative, 0)
+
+    # compute within class covariance
+    #S_w =
+
 
 def load_usps_data(fname, digit=3):
     ''' Loads USPS (United State Postal Service) data from <fname> 
