@@ -18,15 +18,30 @@ def train_lda(X, Y):
     # hint: use the scipy/numpy function sp.cov
 
     # get class data w_{-1} and w_{+1}
-    w_positive = X.T[(Y == 1)]
-    w_negative = X.T[(Y == -1)]
+    w_positive = X[:,(Y == 1)]
+    w_negative = X[:,(Y == -1)]
+
+    print w_negative.shape
 
     # compute class mean of class w_{-1} and w_{+1}
-    mean_w_pos = sp.mean(w_positive, 0)
-    mean_w_neg = sp.mean(w_negative, 0)
+    mean_w_pos = sp.mean(w_positive, 1)
+    mean_w_neg = sp.mean(w_negative, 1)
 
     # compute within class covariance
-    #S_w =
+    #sum1 = np.dot((w_negative-mean_w_neg), (w_negative-mean_w_neg).T) / w_negative.shape[1]
+    #sum2 = np.dot((w_positive-mean_w_pos), (w_positive-mean_w_pos).T) / w_positive.shape[1]
+    #S_w = sum1 + sum2
+    S_w = np.cov(w_positive) + np.cov(w_negative)
+    # compute the weight vector
+    weight = np.dot(inv(S_w),(mean_w_pos-mean_w_neg))
+
+    # compute the bias
+    bias = 0.5 * np.dot(weight.T, (mean_w_pos + mean_w_neg)) + np.math.log(w_negative.shape[1]/w_positive.shape[1])
+
+    print weight.shape[0]
+    print bias
+
+    return weight, bias
 
 
 def load_usps_data(fname, digit=3):
@@ -237,5 +252,9 @@ def crossvalidate(X, Y, f=5, trainfun=train_ncc):
 
     return acc_train, acc_test
 
-digit_images, digit_labels = load_usps_data('usps.mat', 8)
-bci_images, bci_labels = load_bci_data('bcidata.mat')
+#digit_images, digit_labels = load_usps_data('usps.mat', 8)
+#train_lda(digit_images, digit_labels)
+#bci_images, bci_labels = load_bci_data('bcidata.mat')
+#train_lda()
+compare_classifiers(usps=False)
+pl.show()
