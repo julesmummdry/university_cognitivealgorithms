@@ -1,3 +1,10 @@
+# Assignment 3
+# Juliane Reschke (370450)
+# Pierre-Henri Mathieu (377099)
+# Maria Browarska (4970657, FU Berlin)
+# Robert Liebner (368366)
+
+
 import scipy as sp
 import scipy.io as io
 from scipy.linalg import inv
@@ -14,33 +21,27 @@ def train_lda(X, Y):
     Output:      w       -  1D array of length D, weight vector  
                  b       -  bias term for linear classification                          
     '''
-    # your code here 
-    # hint: use the scipy/numpy function sp.cov
 
     # get class data w_{-1} and w_{+1}
     w_positive = X[:,(Y == 1)]
     w_negative = X[:,(Y == -1)]
 
-    print w_negative.shape
+    #print w_negative.shape
 
     # compute class mean of class w_{-1} and w_{+1}
     mean_w_pos = sp.mean(w_positive, 1)
     mean_w_neg = sp.mean(w_negative, 1)
 
-    # compute within class covariance
-    #sum1 = np.dot((w_negative-mean_w_neg), (w_negative-mean_w_neg).T) / w_negative.shape[1]
-    #sum2 = np.dot((w_positive-mean_w_pos), (w_positive-mean_w_pos).T) / w_positive.shape[1]
-    #S_w = sum1 + sum2
+    # compute within class covariance with the numpy cov function
     S_w = np.cov(w_positive) + np.cov(w_negative)
     # compute the weight vector
-    weight = np.dot(inv(S_w),(mean_w_pos-mean_w_neg))
+    weight = np.dot(inv(S_w), (mean_w_pos-mean_w_neg))
 
     # compute the bias
     bias = 0.5 * np.dot(weight.T, (mean_w_pos + mean_w_neg)) + np.math.log(w_negative.shape[1]/w_positive.shape[1])
 
-    print weight.shape[0]
-    print bias
-
+    #print weight.shape[0]
+    #print bias
     return weight, bias
 
 
@@ -256,5 +257,6 @@ def crossvalidate(X, Y, f=5, trainfun=train_ncc):
 #train_lda(digit_images, digit_labels)
 #bci_images, bci_labels = load_bci_data('bcidata.mat')
 #train_lda()
-compare_classifiers(usps=False)
+compare_classifiers(usps=True, digit=6)
+#compare_classifiers_toy()
 pl.show()
