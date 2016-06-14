@@ -104,3 +104,6 @@ def test_assignment4():
     pl.xlabel('x')
     pl.ylabel('y')
     pl.legend(loc = 'lower right')
+
+train_data, train_label, test_data, test_label = load_myo_data('myo_data.mat')
+print train_data
