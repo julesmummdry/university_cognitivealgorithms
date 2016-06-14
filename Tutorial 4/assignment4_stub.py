@@ -1,5 +1,6 @@
 import pylab as pl
 import scipy as sp
+import numpy as np
 from numpy.linalg import inv
 from scipy.io import loadmat
 import pdb
@@ -29,6 +30,9 @@ def train_ols(X_train, Y_train, llambda = 0):
                              with sp.dot(W.T, X)                      
     '''
     #your code here
+    # just what the slides say
+    W = inv(np.dot(X_train, X_train.T) + llambda*np.identity(2)) * np.dot(X_train, Y_train.T)
+    return W
     
 def apply_ols(W, X_test):
     ''' Applys ordinary least squares (ols) regression 
@@ -38,6 +42,9 @@ def apply_ols(W, X_test):
     Output:     Y_test    -  D2xN array
     '''
     #your code here
+    # just what the slides say
+    Y_test = np.dot(W.T, X_test)
+    return Y_test
     
 def predict_handposition():
     X_train,Y_train,X_test, Y_test = load_myo_data('myo_data.mat')
@@ -45,7 +52,7 @@ def predict_handposition():
     W = train_ols(X_train, Y_train)
     # predict hand positions
     Y_hat_train = apply_ols(W, X_train)
-    Y_hat_test = apply_ols(W, X_test) 
+    Y_hat_test = apply_ols(W, X_test)
         
     pl.figure()
     pl.subplot(2,2,1)
@@ -105,5 +112,13 @@ def test_assignment4():
     pl.ylabel('y')
     pl.legend(loc = 'lower right')
 
+def test_polynomial_regression():
+    print 'Test'
+
+
+
 train_data, train_label, test_data, test_label = load_myo_data('myo_data.mat')
 print train_data
+print test_data
+print len(train_data), len(test_data)
+pl.show()
