@@ -12,7 +12,7 @@ def load_myo_data(fname):
     data = loadmat(fname)
     # extract data and hand positions
     X = data['training_data']
-    X = sp.log(X)
+#    X = sp.log(X)
     Y = data['training_labels']
     #Split data into training and test data
     X_train = X[:, :5000]
@@ -25,13 +25,15 @@ def train_ols(X_train, Y_train, llambda = 0):
     ''' Trains ordinary least squares (ols) regression 
     Input:       X_train  -  DxN array of N data points with D features
                  Y        -  D2xN array of length N with D2 multiple labels
-                 llabmda  -  Regularization parameter
+                 llambda  -  Regularization parameter
     Output:      W        -  DxD2 array, linear mapping used to estimate labels 
                              with sp.dot(W.T, X)                      
     '''
     #your code here
     # just what the slides say
-    W = inv(np.dot(X_train, X_train.T) + llambda*np.identity(2)) * np.dot(X_train, Y_train.T)
+
+    W = np.dot(inv(np.dot(X_train, X_train.T) + llambda*np.identity(X_train.shape[0])), np.dot(X_train, Y_train.T))
+
     return W
     
 def apply_ols(W, X_test):
@@ -113,12 +115,16 @@ def test_assignment4():
     pl.legend(loc = 'lower right')
 
 def test_polynomial_regression():
-    print 'Test'
+
+#    x_toy=sp.array([0,1,2,3,4,5,6,7,8,9,10])
+#    y_toy=np.sin(x_toy)+np.random.normal(0,0.5)
+
+#    y_poly = np.polyfit()
+
+# TO DO: finish this function and questions a and b
 
 
 
 train_data, train_label, test_data, test_label = load_myo_data('myo_data.mat')
-print train_data
-print test_data
-print len(train_data), len(test_data)
+predict_handposition()
 pl.show()
