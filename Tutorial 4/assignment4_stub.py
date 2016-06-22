@@ -116,15 +116,51 @@ def test_assignment4():
 
 def test_polynomial_regression():
 
-#    x_toy=sp.array([0,1,2,3,4,5,6,7,8,9,10])
-#    y_toy=np.sin(x_toy)+np.random.normal(0,0.5)
 
-#    y_poly = np.polyfit()
+    x_toy = np.ndarray(shape=(2,11))  #11 datapoints with 2 feature (one is it's x-coordinate, one the y)
+
+
+    x_toy[0,:] = np.arange(11)       #fill first feature of all datapoint with x-coordinate
+    x_toy[1,:]=np.sin(x_toy[0,:])+np.random.normal(0,0.5) #fill second feature of all datapoints with target data
+
+
+    degree = 4  #test it with some degree
+    #llambda = 0
+
+    W = np.polyfit(x_toy[0,:],x_toy[1,:],degree)    #try to estimate correct coefficients for polynomial mapping
+    #  (This looks erroneous, because we try to map one feature to the other)
+    #  First our toy data was:
+    #   a) x_toy: 11 datapoints with one feature which actually the value of the elements being their index
+    #   b) y_toy: 11 datapoint with one label and their value being np.sin(x_toy[0,:])+np.random.normal(0,0.5)
+    #   but we couldn't feed it to train_ols, because we recvd a "singular matrix"-error (matrix not inversible)
+
+
+    #build up a polynominal calculated value for all datapoints
+
+    #initialize all elements with w0
+    y_estimate = np.full(11,W[0])
+
+
+    for x in range(11):
+        for i in range(1,degree+1):
+             y_estimate[x] += W[i] * pow(x,i)   #add up next monome element
+
+
+
+    estimate = train_ols(x_toy,y_estimate)
+
+    apply_ols(estimate,x_toy[0,:])
+
+
+    #apply_ols()
 
 # TO DO: finish this function and questions a and b
 
 
 
-train_data, train_label, test_data, test_label = load_myo_data('myo_data.mat')
-predict_handposition()
-pl.show()
+#train_data, train_label, test_data, test_label = load_myo_data('myo_data.mat')
+#print train_label.shape[0]
+
+#predict_handposition()
+#pl.show()
+test_polynomial_regression()
