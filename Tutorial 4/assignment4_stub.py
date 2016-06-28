@@ -1,3 +1,8 @@
+# Assignment 4
+# Juliane Reschke (370450)
+# Pierre-Henri Mathieu (377099)
+# Robert Liebner (368366)
+
 import pylab as pl
 import scipy as sp
 import numpy as np
@@ -29,8 +34,6 @@ def train_ols(X_train, Y_train, llambda = 0):
     Output:      W        -  DxD2 array, linear mapping used to estimate labels 
                              with sp.dot(W.T, X)                      
     '''
-    #your code here
-    # just what the slides say
 
     W = np.dot(inv(np.dot(X_train, X_train.T) + llambda*np.identity(X_train.shape[0])), np.dot(X_train, Y_train.T))
 
@@ -43,8 +46,7 @@ def apply_ols(W, X_test):
                              trained with train_ols                   
     Output:     Y_test    -  D2xN array
     '''
-    #your code here
-    # just what the slides say
+ 
     Y_test = np.dot(W.T, X_test)
     return Y_test
     
