@@ -1,3 +1,8 @@
+# Assignment 5
+# Juliane Reschke (370450)
+# Pierre-Henri Mathieu (377099)
+# Robert Liebner (368366)
+
 import pylab as pl
 import scipy as sp
 from numpy.linalg import inv
@@ -41,6 +46,10 @@ def train_krr(X_train, Y_train,kwidth,llambda):
     Output:      alphas   -  NxD2 array, weighting of training data used for apply_krr                     
     '''
     # your code here
+    kernelMatrix = GaussianKernel(X_train, X_train, kwidth)
+    alphas = np.dot(inv(kernelMatrix + llambda * np.identity(kernelMatrix.shape[0])), Y_train.T)
+    return alphas
+
     
 def apply_krr(alphas, X_train, X_test, kwidth):
     ''' Applys kernel ridge regression (krr)
@@ -51,6 +60,9 @@ def apply_krr(alphas, X_train, X_test, kwidth):
     Output:     Y_test      -  D2xNte array
     '''
     # your code here
+    kernel = GaussianKernel(X_test, X_train, kwidth)
+    Y_test = np.dot(kernel, alphas).T
+    return Y_test
 	
 def train_ols(X_train, Y_train):
     ''' Trains ordinary least squares (ols) regression 
@@ -97,6 +109,7 @@ def test_sine_toydata(kwidth = 1, llambda = 1):
     pl.xlabel('x')
     pl.ylabel('y')
     pl.legend(loc = 'lower right')
+    pl.show()
     
       
 def crossvalidate_krr(X,Y,f=5, kwidths=10.0**np.array([0, 1, 2]), llambdas=10.0**np.array([-4, -2, 0])):
@@ -165,3 +178,6 @@ def crossvalidate_krr(X,Y,f=5, kwidths=10.0**np.array([0, 1, 2]), llambdas=10.0*
 def compute_rsquare(yhat,Y):
     '''compute coefficient of determination'''
     return 1 - (sp.var((yhat - Y),axis=1).sum()/sp.var(Y,axis=1).sum())
+
+data_train, label_train = load_data('myo_data.mat')
+test_sine_toydata()
