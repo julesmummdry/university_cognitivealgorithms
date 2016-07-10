@@ -173,6 +173,7 @@ def crossvalidate_krr(X,Y,f=5, kwidths=10.0**np.array([0, 1, 2]), llambdas=10.0*
     pl.ylabel('$r^2$')
     pl.xticks((1,2),('KRR','Lin'))
     pl.savefig('krr_vs_lin_comparison.pdf')
+    pl.show()
     return r2_outer,r2_linear
     
 def compute_rsquare(yhat,Y):
@@ -180,4 +181,5 @@ def compute_rsquare(yhat,Y):
     return 1 - (sp.var((yhat - Y),axis=1).sum()/sp.var(Y,axis=1).sum())
 
 data_train, label_train = load_data('myo_data.mat')
-test_sine_toydata()
+#test_sine_toydata(1, 500)
+test_handpositions()
