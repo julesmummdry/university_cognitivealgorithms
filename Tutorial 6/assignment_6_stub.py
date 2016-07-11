@@ -28,7 +28,7 @@ def pca(X,ncomp=10):
     # k largest eigenvalues
     # when do we use ncomp?
     #eigenvalues = np.eigvals(ncomp)
-    alpha = np.eig(kernel)
+    alpha = np.linalg.eig(kernel)
 
     # compute W and H 
     W = np.dot(centered_data, alpha)
