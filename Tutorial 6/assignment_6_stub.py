@@ -10,19 +10,30 @@ def pca(X,ncomp=10):
 	        ncomp   - number of principal components to estimate 
 	OUTPUT: W       - D x ncomp array of directions of maximal variance, 
 	                 sorted by their eigenvalues
-	        H       - ncomp x N array of projected data ''' 
+	        H       - ncomp x N array of projected data
+    '''
+
+    #Folie 21 lecture 6
     ncomp = min(np.hstack((X.shape, ncomp)))
     #center the data
-    # ... 
+    #dont know how to sum over the x_i in python syntax
+    #calculate the covariance matrix?
+    #centered_data = X - ((1/X.shape[1]) * sum(X.shape[1]))
+    centered_data = np.cov(X)
     
     # compute linear kernel
-    #...
+    kernel = np.dot(centered_data, centered_data.T)
     
     # compute eigenvectors and sort them according to their eigenvalues
-    # ...
-    
+    # k largest eigenvalues
+    # when do we use ncomp?
+    #eigenvalues = np.eigvals(ncomp)
+    alpha = np.eig(kernel)
+
     # compute W and H 
-    #...
+    W = np.dot(centered_data, alpha)
+    H = np.dot(W.T, centered_data)
+    return W, H
 
 def get_data(fname='newsdata_BOW.npz'):
 	foo = np.load(fname)
@@ -86,5 +97,7 @@ def test_assignment6():
     pl.plot(X[0,:], X[1,:], '+', color='k')
     pl.axis('equal')	
     pl.legend(loc=1)
+
+test_assignment6()
     
 
