@@ -19,20 +19,27 @@ def pca(X,ncomp=10):
     #dont know how to sum over the x_i in python syntax
     #calculate the covariance matrix?
     #centered_data = X - ((1/X.shape[1]) * sum(X.shape[1]))
-    centered_data = np.cov(X)
+    #centered_data = np.cov(X)
+    X = X - np.mean(X, axis=1)
     
     # compute linear kernel
-    kernel = np.dot(centered_data, centered_data.T)
+    kernel = np.dot(X, X.T)
     
     # compute eigenvectors and sort them according to their eigenvalues
     # k largest eigenvalues
     # when do we use ncomp?
-    #eigenvalues = np.eigvals(ncomp)
-    alpha = np.linalg.eig(kernel)
+    eigenvalues = np.linalg.eigvals(kernel)
+    #sorted_eigenvals = np.sort(eigenvalues)
+    eigenvalues = eigenvalues[::-1]
+    eigenvalues = eigenvalues[0:ncomp]
+    eigenvectors = np.linalg.eigh(kernel)
+    np.linalg.eigh(kernel, )
+    eigenvectors = eigenvectors[1]
+    #alpha = np.linalg.eig(kernel)
 
     # compute W and H 
-    W = np.dot(centered_data, alpha)
-    H = np.dot(W.T, centered_data)
+    W = np.dot(X, eigenvectors)
+    H = np.dot(W.T, X)
     return W, H
 
 def get_data(fname='newsdata_BOW.npz'):
