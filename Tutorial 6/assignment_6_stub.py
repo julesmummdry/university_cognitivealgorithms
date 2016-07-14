@@ -1,6 +1,7 @@
 import numpy as np
 import pylab as pl
 import scipy as sp
+import scipy.linalg as lin
 import pdb
 
 
@@ -28,12 +29,12 @@ def pca(X,ncomp=10):
     # compute eigenvectors and sort them according to their eigenvalues
     # k largest eigenvalues
     # when do we use ncomp?
-    eigenvalues = np.linalg.eigvals(kernel)
-    #sorted_eigenvals = np.sort(eigenvalues)
-    eigenvalues = eigenvalues[::-1]
-    eigenvalues = eigenvalues[0:ncomp]
-    eigenvectors = np.linalg.eigh(kernel)
-    np.linalg.eigh(kernel, )
+    eigvals = np.linalg.eigvals(kernel)
+    count_eigvals = len(eigvals)
+    #eigvals = np.sort(eigvals)
+    #eigvals = eigvals[::-1]
+    #eigvals = eigvals[0:ncomp]
+    eigenvectors = lin.eigh(kernel, eigvals=(count_eigvals-ncomp, count_eigvals-1))
     eigenvectors = eigenvectors[1]
     #alpha = np.linalg.eig(kernel)
 
