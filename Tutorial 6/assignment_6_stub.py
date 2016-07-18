@@ -21,7 +21,12 @@ def pca(X,ncomp=10):
     #calculate the covariance matrix?
     #centered_data = X - ((1/X.shape[1]) * sum(X.shape[1]))
     #centered_data = np.cov(X)
-    X = X - np.mean(X, axis=1)
+    mean = np.mean(X, axis=1)
+    # Hack in order that python doesn't suck anymore
+    mean = map(lambda x: [x], mean)
+    # pdb.set_trace()
+    X = X - mean
+    #X = X - np.mean(X, axis=1)
     
     # compute linear kernel
     kernel = np.dot(X, X.T)
@@ -85,7 +90,7 @@ def test_assignment6():
     ##Example 1
     X = sp.array([[0, 1], [0, 1]])
     W, H = pca(X, ncomp = 1)
-    assert(sp.all(W / W[0] == [[1], [1]])) 
+    assert(sp.all(W / W[0] == [[1], [1]]))
     print '2 datapoint test passed'
     
     ##Example 2
@@ -105,6 +110,7 @@ def test_assignment6():
     pl.plot(X[0,:], X[1,:], '+', color='k')
     pl.axis('equal')	
     pl.legend(loc=1)
+    pl.show()
 
 test_assignment6()
     
